@@ -19,6 +19,11 @@ function getModalStyle() {
     top: `${top}%`,
     left: `${left}%`,
     transform: `translate(-${top}%, -${left}%)`,
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "column",
+    minHeight: 200,
+    justifyContent: "space-around",
   };
 }
 
@@ -39,13 +44,15 @@ const useStyles = makeStyles((theme) => ({
   comment: {
     margin: 5,
   },
+  btn: {
+    margin: 15,
+  },
 }));
 
 export default function CommentCard() {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = useState(getModalStyle);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
