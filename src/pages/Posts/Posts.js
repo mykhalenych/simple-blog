@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 import {
   getPostsSelector,
   getSearchDataSelector,
-} from "../../store/selectors/rootSelectors";
-import { getPostsAction } from "../../store/actions/rootActions";
-import PostCard from "../../components/PostCard";
-import Preloader from "../../components/Preloader";
+} from '../../store/selectors/rootSelectors';
+import { getPostsAction } from '../../store/actions/rootActions';
+import PostCard from '../../components/PostCard';
+import Preloader from '../../components/Preloader';
 
 const PostsWrapper = styled.div`
   .posts {
@@ -23,27 +23,22 @@ const Posts = () => {
   const dispatch = useDispatch();
   const postsData = useSelector(getPostsSelector);
   const searchData = useSelector(getSearchDataSelector);
-
   useEffect(() => {
-    setTimeout(() => {
       dispatch(getPostsAction());
       setIsLoadedData(true);
-    }, 1500);
   }, [dispatch]);
 
-  // pagination section
-
   const filteredData = !searchData
-    ? postsData.filter(
-        (post) =>
-          post.title.includes(searchData) || post.body.includes(searchData)
-      )
-    : null;
+    ? postsData
+    : postsData.filter(
+        (post) =>{
+       return   post.title.includes(searchData)
+        }
+      );
 
   const posts = filteredData.map((post) => (
     <PostCard
       title={post.title}
-      content={post.body}
       key={post.id}
       id={post.id}
     />
@@ -54,9 +49,6 @@ const Posts = () => {
       <PostsWrapper>
         {!isLoadedData && <Preloader />}
         <div className="posts">{postsData.length ? posts : null}</div>
-        {searchData && !filteredData.length && (
-          <h2>There is no search results</h2>
-        )}
       </PostsWrapper>
     </>
   );
